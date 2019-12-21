@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet" />
+</head>
+<body>
+<div class = "container">
+    <h1 id="text">Notebook</h1>
+
+<form th:action="@{/notebook/add-note}" th:object="${newNote}" method="post">
+    <table>
+        <tr>
+            <td>Title:</td>
+            <td class="titleField"><input class="noteTitleAndText" type="text" th:field="*{title}"/></td>
+        </tr>
+        <tr>
+            <td>Text:</td>
+            <td><textarea class="noteTitleAndText" th:field="*{text}" rows="4" cols="50"/></td>
+        </tr>
+    </table>
+    <input class="blueButton" type="submit" value="Add Note"/>
+</form>
+    <br/>
+    <table th:if="${notes.size()!=0}" class="notebookTable">
+        <thead>
+        <tr>
+            <th> Date </th>
+            <th> Title </th>
+        </tr>
+        </thead>
+
+        <tr th:each="Note: ${notes}">
+            <td th:text="${Note.getDate()}"></td>
+            <td th:text="${Note.getTitle()}"></td>
+            <td><a class="greenButton" th:href="@{/notebook/{id}(id=${Note.id})}">Show</a></td>
+            <td>
+                <form th:action="@{/notebook/{id}/delete(id=${Note.id})}"  method="post">
+                    <input class="redButton" type="submit" th:value="Delete"/>
+                </form>
+            </td>
+
+        </tr>
+    </table>
+
+
+</div>
+</body>
+</html>

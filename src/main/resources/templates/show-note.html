@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet" />
+</head>
+<body>
+    <h1 id="text" th:text="${edit} ? 'Edit Note' : 'Show Note'"></h1>
+    <a class="blueButton" th:href="@{/notebook}">Back to Note List</a>
+    <br/><br/>
+    <form th:if="${edit!=true} and ${note}" th:action="@{/notebook/{id}/delete(id=${note.id})}" th:object="${note}" method="post">
+        <div class="show-note-class" th:if="${edit!=true} and ${note}">
+            <table class="notebookTable">
+                <tr>
+                    <td>Data:</td>
+                    <td th:utext="${note.date}"></td>
+                </tr>
+                <tr>
+                    <td>Title:</td>
+                    <td th:utext="${note.title}"></td>
+                </tr>
+                <tr>
+                    <td>Text:</td>
+                    <td th:utext="${note.text}"></td>
+                </tr>
+
+            </table>
+            <br/>
+            <div>
+                <a class="greenButton" th:href="@{/notebook/{id}/edit(id=${note.id})}">Edit</a>
+                <input class="redButton" type="submit" th:value="Delete"/>
+            </div>
+        </div>
+    </form>
+    <form th:if="edit"  th:action="@{/notebook/{id}/edit(id=${note.id})} "th:object="${note}" method="post">
+        <div class="edit-note-class" th:if="${edit} and ${note}">
+            <table>
+                <tr>
+                    <td>Title:</td>
+                    <td class="titleField"><input class="noteTitleAndText" type="text" th:field="*{title}"/></td>
+                </tr>
+                <tr>
+                    <td>Text:</td>
+                    <td><textarea class="noteTitleAndText" th:field="*{text}" rows="4" cols="50"/></td>
+                </tr>
+            </table>
+            <input class="greenButton" type="submit" th:value="Update"/>
+        </div>
+
+    </form>
+    <div th:if="${errorMessage}" th:utext="${errorMessage}" class="error" />
+</body>
+</html>
